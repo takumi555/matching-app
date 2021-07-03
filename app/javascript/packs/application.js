@@ -1,4 +1,7 @@
 import 'bootstrap';
+
+import 'hammerjs';
+
 import '../stylesheets/application';
 import '@fortawesome/fontawesome-free/js/all';
 
@@ -8,6 +11,8 @@ import '@fortawesome/fontawesome-free/js/all';
 // that code so it'll be compiled.
 
 require("src/profile_image_upload");
+
+require("src/swipe")
 
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
