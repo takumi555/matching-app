@@ -50,6 +50,9 @@ if(location.pathname == "/users") {
         let keep = Math.abs(event.deltaX) < 200
         event.target.classList.toggle('removed', !keep);
 
+        let reaction = event.deltaX > 0 ? "like" : "dislike";
+        
+
         if (keep) {
           event.target.style.transform = '';
         } else {
@@ -61,12 +64,30 @@ if(location.pathname == "/users") {
           let yMulti = event.deltaY / 80;
           let rotate = xMulti * yMulti;
 
+          postReaction(el.id, reaction);
+          
+
           event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
 
           initCards();
         }
       });
     });
+
+    function postReaction(user_id, reaction) {
+      $.ajax({
+        url: "reactions.json",
+        type: "POST",
+        datatype: "json",
+        data: {
+          user_id: user_id,
+          reaction: reaction,
+        }
+      })
+      .done(function () {
+        console.log("done!")
+      })
+    }
 
     function createButtonListener(reaction) {
       let cards = document.querySelectorAll('.swipe--card:not(.removed)');
@@ -76,6 +97,11 @@ if(location.pathname == "/users") {
       let moveOutWidth = document.body.clientWidth * 2;
     
       let card = cards[0];
+
+      let user_id = card.id;
+
+      postReaction(user_id, reaction);
+
       card.classList.add('removed');
     
       if (reaction == "like") {
